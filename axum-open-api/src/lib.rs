@@ -1,3 +1,5 @@
+#![doc = include_str!("../../README.md")]
+
 use axum::{
     extract::rejection::{
         BytesRejection, FormRejection, JsonRejection, PathRejection, QueryRejection,
@@ -8,11 +10,8 @@ use axum::{
     routing::MethodRouter,
     Router,
 };
-pub use axum_open_api_codegen::validate_routes;
 
-//-------------------------------------
-// library
-//-------------------------------------
+pub use axum_open_api_codegen::validate_routes;
 
 pub trait OapiRouter {
     type State: Clone + Send + Sync + 'static;
