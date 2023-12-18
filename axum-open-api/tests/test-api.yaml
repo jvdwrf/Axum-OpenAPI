@@ -1,0 +1,136 @@
+openapi: 3.0.0
+info:
+  title: Agora Prototype API
+  description: Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.
+  version: 0.0.1
+
+components:
+  schemas:
+    StringAlias:
+      type: string
+
+    NumberAlias:
+      type: number
+
+    BooleanAlias:
+      type: boolean
+
+    StringVectorAlias:
+      type: array
+      items:
+        type: string
+        
+    IntegerAlias:
+      type: integer
+
+    ObjectSchema:
+      type: object
+      required:
+        - "req_id"
+      properties:
+        id:
+          type: integer
+          example: 102032
+        req_id:
+          type: integer
+        name_ref:
+          $ref: '#/components/schemas/StringAlias'
+        inline_object:
+          type: object
+          title: NestedInlineObject
+          properties:
+            id:
+              type: integer
+              example: 102032
+
+    OneOfSchema:
+      oneOf:
+        - type: number
+          title: NumberTitle
+        - type: string
+        - $ref: '#/components/schemas/BooleanAlias'
+
+paths:
+  /users/{user_id}/posts/{post_id}:
+    get: 
+      summary: Returns the user's post marked by ppost_id.
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: string
+          required: true
+          description: The user ID
+        - in: path
+          name: post_id
+          schema:
+            type: array
+            items:
+              type: integer
+          required: true
+          description: The post ID
+        - in: query
+          name: include_comments
+          schema:
+            type: boolean
+          required: false
+          description: Whether to include comments in the response
+        - in: query
+          name: amount
+          schema:
+            type: integer
+          required: true
+          description: The amount of comments to include in the response
+      responses:
+        '200':
+          description: An array of tags that make up this user's feed
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+
+  /users/{user_id}/posts/{post_id}/comment:
+    post: 
+      summary: Creates a new comment for the post.
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: string
+          required: true
+          description: The user ID
+        - in: path
+          name: post_id
+          schema:
+            type: array
+            items:
+              type: integer
+          required: true
+          description: The post ID
+        - in: query
+          name: amount
+          schema:
+            type: integer
+          required: false
+          description: The amount of comments to include in the response
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                  example: "Comment content"
+                
+      responses:
+        '200':
+          description: An array of tags that make up this user's feed
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string

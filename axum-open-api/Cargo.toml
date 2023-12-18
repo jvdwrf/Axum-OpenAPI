@@ -1,0 +1,11 @@
+[package]
+name = "axum-open-api"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+axum = { workspace = true }
+axum-open-api-codegen = { path = "../axum-open-api-codegen" }
+serde = { workspace = true }
